@@ -20,11 +20,13 @@ def voc2007(annotationPath):
     if not os.path.exists(cache_file):
         print 'parse annotation file...'
         files = os.listdir(annotationPath)
+        files = sorted(files)
         annotation = []
         for f in files:
             assert(f.endswith('xml'))
             tree = ET.parse(os.path.join(annotationPath, f))
-            size = [tree.find('size').find('width').text, tree.find('size').find('height').text]
+            width = tree.find('size').find('width').text, 
+            height = tree.find('size').find('height').text
             boxes = []
             objs = tree.findall('object')
             for ix, obj in enumerate(objs):
@@ -34,7 +36,7 @@ def voc2007(annotationPath):
                 y1 = float(bbox.find('ymin').text) - 1
                 x2 = float(bbox.find('xmax').text) - 1
                 y2 = float(bbox.find('ymax').text) - 1
-                boxes.append([objName, x1, y1, x2, y2])
+                boxes.append([objName, width, height, x1, y1, x2, y2])
             annotation.append(boxes)
 
         with open(cache_file, 'wb') as fid:
@@ -47,10 +49,10 @@ def editJS(content):
         lines = fid.readlines();
     with open('main.js', 'w') as fid:
         for l in lines:
-            if '    var filepath' in l:
-                fid.write('    ' + content[0] + '\n')
-            elif '    var loadImage' in l:
-                fid.write('    ' + content[1] + '\n')
+            if 'var filepath' in l:
+                fid.write(content[0] + '\n')
+            elif 'var loadImage' in l:
+                fid.write(content[1] + '\n')
             else:
                 fid.write(l)
 
@@ -59,6 +61,7 @@ def getImages(argv):
     if not filepath.endswith('/'):
         filepath += '/'
     files = os.listdir(filepath)
+    files = sorted(files)
     loadImage = "{\"Date\":["
     for f in files:
         if f.endswith('jpg') or f.endswith('JPG'):
@@ -79,11 +82,9 @@ def main():
         print(__doc__)
         return
     editJS(getImages(sys.argv))
-    print "Written to main.js, open index.html using browser"
     
     if len(sys.argv) == 3:
         voc2007(sys.argv[2])
-
 
 
 if __name__ == "__main__":
