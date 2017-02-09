@@ -24,6 +24,9 @@ window.onload=function(){
                     if(typeof(data['data'][i-flag1]) == 'undefined'){
                         continue;
                     }
+                    if(data['data'][i-flag1].length == 0){
+                        continue;
+                    }
                     var box=document.createElement("div");
                     box.className="box";
                     var cparent=document.getElementById("content");
@@ -59,6 +62,7 @@ function drawCanvas(canvas, imgsrc, bboxes){
     var image = new Image();
     image.src = imgsrc;
     image.onload = function() {
+        var width_show = canvas.width;
         if (image.width != canvas.width) {
             canvas.width = image.width;
         }
@@ -68,18 +72,21 @@ function drawCanvas(canvas, imgsrc, bboxes){
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(image, 0, 0);
         ctx.strokeStyle = "#FF6600";
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 2 * image.width / width_show;
 
         width_bbox = bboxes[0][1];
         height_bbox = bboxes[0][2];
+
         for(var i=0; i < bboxes.length; i++){
-            x1 = bboxes[i][3]*image.width/width_bbox;
-            y1 = bboxes[i][4]*image.height/height_bbox;
-            x2 = bboxes[i][5]*image.width/width_bbox;
-            y2 = bboxes[i][6]*image.height/height_bbox;
-            ctx.strokeRect( x1, y1, x2-x1, y2-y1);
+            //if(bboxes[i][0] == 'tower'){
+                x1 = bboxes[i][3]*image.width/width_bbox;
+                y1 = bboxes[i][4]*image.height/height_bbox;
+                x2 = bboxes[i][5]*image.width/width_bbox;
+                y2 = bboxes[i][6]*image.height/height_bbox;
+                ctx.strokeRect( x1, y1, x2-x1, y2-y1); 
+            //}
         }   
-    }
+    }       
 }
 
 function checkFlag(){

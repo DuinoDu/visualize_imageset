@@ -31,6 +31,7 @@ def sendBBoxes():
     global annotation
     assert(annotation != None)
 
+    assert(start >= 0 and start < end and end < len(annotation))
     response = jsonify(data = annotation[start : end])
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
@@ -44,5 +45,18 @@ def main():
     annotation_file = sys.argv[1]
     app.run(host='127.0.0.1', port=5000)
 
+def test():
+    import sys
+    if len(sys.argv) != 2:
+        print "no annotation file path"
+        return
+    global annotation_file 
+    annotation_file = sys.argv[1]
+    loadAnnotation(annotation_file)
+    global annotation
+    assert(annotation != None)
+    print annotation[0]
+
 if __name__ == "__main__":
+    #test()
     main()

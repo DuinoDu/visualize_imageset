@@ -18,12 +18,11 @@ def coco():
 def dianwang():
     pass
 
-def voc2007(annotationPath):
+def voc2007(annotationPath, cache_file):
     """TODO: Docstring for voc2007.
     :returns: TODO
 
     """
-    cache_file = 'voc2007.pkl'
     if not os.path.exists(cache_file):
         print 'parse annotation file...'
         files = os.listdir(annotationPath)
@@ -32,7 +31,7 @@ def voc2007(annotationPath):
         for f in files:
             assert(f.endswith('xml'))
             tree = ET.parse(os.path.join(annotationPath, f))
-            width = tree.find('size').find('width').text, 
+            width = tree.find('size').find('width').text 
             height = tree.find('size').find('height').text
             boxes = []
             objs = tree.findall('object')
@@ -90,8 +89,8 @@ def main():
         return
     editJS(getImages(sys.argv))
     
-    if len(sys.argv) == 3:
-        voc2007(sys.argv[2])
+    if len(sys.argv) == 4:
+        voc2007(sys.argv[2], sys.argv[3])
 
 
 if __name__ == "__main__":
