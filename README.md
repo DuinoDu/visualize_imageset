@@ -4,8 +4,7 @@ A tool based on html to display image in image set.
 
 # Usage
 ```
-python setImagePath.py [your imageset path] [your annotation path]
-python server.py
+./run.sh [image path] [annotation path]
 ```
 ```
 firefox index.html
