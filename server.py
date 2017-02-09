@@ -13,6 +13,7 @@ import os
 import cPickle
 import copy
 
+annotation_file = ""
 annotation = None
 def loadAnnotation(filename):
     global annotation
@@ -25,8 +26,8 @@ def sendBBoxes():
     start = int(request.args.get('start'))
     end = int(request.args.get('end'))
 
-    cache_file = 'voc2007.pkl'
-    loadAnnotation(cache_file)
+    global annotation_file 
+    loadAnnotation(annotation_file)
     global annotation
     assert(annotation != None)
 
@@ -34,5 +35,14 @@ def sendBBoxes():
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 
-if __name__ == "__main__":
+def main():
+    import sys
+    if len(sys.argv) != 2:
+        print "no annotation file path"
+        return
+    global annotation_file 
+    annotation_file = sys.argv[1]
     app.run(host='127.0.0.1', port=5000)
+
+if __name__ == "__main__":
+    main()

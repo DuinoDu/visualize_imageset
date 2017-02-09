@@ -1,11 +1,16 @@
 #!/bin/sh
 
+if [ ! -n "$1" ] || [ ! -n "$2" ];then
+    echo "Usage: ./run.sh [image set path] [annotation set path]"
+    exit 1
+fi
 python setImageSet.py $1 $2
 
-if [ ! -f voc2007.pkl ];then
-    echo "No voc2007.pkl"
+annotation='voc2007.pkl'
+if [ ! -f $annotation ];then
+    echo "No ${annotation}"
     exit1
 fi
 
 echo "Use firefox to open index.html"
-python server.py 
+python server.py ${annotation} 

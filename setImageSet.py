@@ -11,6 +11,13 @@ import os
 import cPickle
 import xml.etree.ElementTree as ET
 
+def voc2012():
+    pass
+def coco():
+    pass
+def dianwang():
+    pass
+
 def voc2007(annotationPath):
     """TODO: Docstring for voc2007.
     :returns: TODO
