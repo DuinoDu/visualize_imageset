@@ -1,6 +1,6 @@
 #!/bin/sh
 
-python setImagePath.py $1
+python setImageSet.py $1
 
 if [ ! -f voc2007.pkl ];then
     echo "No voc2007.pkl"
